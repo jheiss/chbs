@@ -24,7 +24,12 @@ Or install it yourself as:
 
 ## Usage
 
-Just run 'chbs'
+    Usage: chbs [options]
+      -c, --corpus=CORPUS      Corpus of words
+      -m, --min-length=MIN     Minimum word length
+      -M, --max-length=MAX     Maximum word length
+      -n, --num-words=NUM      Number of words
+      -s, --separator=STRING   Word separator
 
 ## Contributing
 
