@@ -1,0 +1,52 @@
+#!/usr/bin/env ruby
+
+require 'json'
+require 'nokogiri'
+
+def tv_and_movies
+  corpus = {}
+  
+  wordcount = 0
+  datadir = File.expand_path('../data/wiktionary/tv-and-movies/', __FILE__)
+  Dir.foreach(datadir) do |file|
+    next if file == '.' || file == '..'
+    doc = Nokogiri::HTML(File.open(File.join(datadir, file)))
+    first = true
+    doc.xpath("/html/body/div[@id='content']/div[@id='bodyContent']/div[@class='mw-content-ltr']/table/tr").each do |tr|
+      # Skip the header line
+      if first
+        first = false
+        if tr.at_xpath('td/b')
+          next
+        end
+      end
+      
+      # <tr>
+      # <td>1</td>
+      # <td><a href="/wiki/you" title="you">you</a></td>
+      # <td>1222421</td>
+      # </tr>
+      # <tr>
+      td = tr.xpath('td').to_a
+      # Ignore some cruft in a few files
+      next if td[0].content.include?('-----')
+      rank = td[0].content
+      word = td[1].at_xpath('a').content
+      count = td[2].content
+      
+      # Skip contractions
+      next if word.include?("'")
+      # Skip proper names
+      next if word =~ /^[A-Z]/
+      corpus[word.length] ||= []
+      corpus[word.length] << word
+      wordcount += 1
+    end
+  end
+  
+  File.open('../corpus/tv-and-movies.json', 'w') do |file|
+    file.write corpus.to_json
+  end
+end
+
+tv_and_movies
