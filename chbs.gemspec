@@ -4,8 +4,7 @@ require File.expand_path('../lib/chbs/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Jason Heiss"]
   gem.email         = ["jheiss@aput.net"]
-  gem.description   = %q{Pick four random, common words and string them together to make a very
-  strong but easy to remember password}
+  gem.description   = %q{Pick four random, common words and use them to make a very strong but easy to remember password}
   gem.summary       = %q{http://xkcd.com/936/}
   gem.homepage      = ""
 
