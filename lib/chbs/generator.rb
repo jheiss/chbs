@@ -20,6 +20,7 @@ class Chbs::Generator
     min_length = options[:min_length] || 3
     max_length = options[:max_length] || 10
     num_words = options[:num_words] || 4
+    separator = options[:separator] || '-'
     
     # Creating a temporary array is suboptimal, but it seems fast enough
     words = []
@@ -33,6 +34,6 @@ class Chbs::Generator
     num_words.times do
       passwords << words[rand(words.length-1)]
     end
-    passwords.join('-')
+    passwords.join(separator)
   end
 end

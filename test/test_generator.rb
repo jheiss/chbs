@@ -82,5 +82,14 @@ class ChbsGeneratorTests < Test::Unit::TestCase
       assert_match /^[a-z]{3,10}$/, word
     end
   end
+  def test_generate_separator
+    chbs = Chbs::Generator.new
+    password = chbs.generate(separator: '=')
+    words = password.split('=')
+    assert_equal 4, words.length
+    words.each do |word|
+      assert_match /^[a-z]{3,10}$/, word
+    end
+  end
 end
 

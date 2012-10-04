@@ -124,6 +124,22 @@ class ChbsOptionTests < Test::Unit::TestCase
     end
   end
   
+  def test_separator_arg_required
+    ensure_arg_required('--separator')
+  end
+  def test_separator
+    output = nil
+    IO.popen("#{RUBY} -I #{LIBDIR} #{CHBS} --separator =") do |pipe|
+      output = pipe.readlines
+    end
+    assert_equal 1, output.length
+    words = output[0].split('=')
+    assert_equal 4, words.length
+    words.each do |word|
+      assert_match /^[a-z]{3,10}$/, word
+    end
+  end
+  
   def test_default_operation
     output = nil
     IO.popen("#{RUBY} -I #{LIBDIR} #{CHBS}") do |pipe|

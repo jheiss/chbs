@@ -25,6 +25,9 @@ def parse_options
   opts.on('--num-words', '-n', '=NUM', 'Number of words', Integer) do |opt|
     @options[:num_words] = opt
   end
+  opts.on('--separator', '-s', '=STRING', 'Word separator') do |opt|
+    @options[:separator] = opt
+  end
   
   begin
     @leftovers = opts.parse(ARGV)
