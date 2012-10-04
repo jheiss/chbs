@@ -1,10 +1,38 @@
 #!/usr/bin/env ruby
 
 require 'chbs'
+require 'optparse'
 
 def main
-  chbs = Chbs::Generator.new
-  puts chbs.generate
+  parse_options
+  chbs = Chbs::Generator.new(@options)
+  puts chbs.generate(@options)
+end
+def parse_options
+  @options = {}
+  
+  opts = OptionParser.new(nil, 24, '  ')
+  opts.banner = 'Usage: chbs [options]'
+  opts.on('--corpus', '-c', '=CORPUS', 'Corpus of words') do |opt|
+    @options[:corpus] = opt
+  end
+  opts.on('--min-length', '-m', '=MIN', 'Minimum word length', Integer) do |opt|
+    @options[:min_length] = opt
+  end
+  opts.on('--max-length', '-M', '=MAX', 'Maximum word length', Integer) do |opt|
+    @options[:max_length] = opt
+  end
+  opts.on('--num-words', '-n', '=NUM', 'Number of words', Integer) do |opt|
+    @options[:num_words] = opt
+  end
+  
+  begin
+    @leftovers = opts.parse(ARGV)
+  rescue OptionParser::ParseError => e
+    $stderr.puts "Error parsing arguments, try --help"
+    $stderr.puts e.message
+    exit 1
+  end
 end
 
 main
