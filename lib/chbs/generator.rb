@@ -4,14 +4,13 @@ require 'nokogiri'
 class Chbs::Generator
   attr_reader :corpus
   def initialize(options={})
-    corpusname = options[:corpus] || 'tv-and-movies'
+    corpusname = options[:corpus] || Chbs::DEFAULT_CORPUS
     
     corpusfile = nil
     if corpusname.include?('/')
       corpusfile = corpusname
     else
-      corpusdir = File.expand_path('../../../corpus/', __FILE__)
-      corpusfile = File.join(corpusdir, "#{corpusname}.json")
+      corpusfile = File.join(Chbs::CORPORA_DIRECTORY, "#{corpusname}.json")
     end
     @corpus = JSON.parse(File.read(corpusfile))
   end
