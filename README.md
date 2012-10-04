@@ -24,6 +24,8 @@ Or install it yourself as:
 
 ## Usage
 
+Just running chbs with no options will be sufficient in most cases.
+
     Usage: chbs [options]
       -c, --corpus=CORPUS      Corpus of words
       -m, --min-length=MIN     Minimum word length
