@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["jheiss@aput.net"]
   gem.description   = %q{Pick four random, common words and use them to make a very strong but easy to remember password}
   gem.summary       = %q{http://xkcd.com/936/}
-  gem.homepage      = ""
+  gem.homepage      = 'https://github.com/jheiss/chbs'
 
   gem.files         = `git ls-files`.split($\).reject{ |f| f =~ %r{^data/} }
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
