@@ -14,4 +14,6 @@ Gem::Specification.new do |gem|
   gem.name          = "chbs"
   gem.require_paths = ["lib"]
   gem.version       = Chbs::VERSION
+
+  gem.add_development_dependency('nokogiri')
 end
