@@ -1,6 +1,12 @@
-# Chbs
+# chbs
 
-TODO: Write a gem description
+An implementation of http://xkcd.com/936/
+
+I.e. pick four random, common words and string them together to make a very
+strong but easy to remember password.
+
+The words are chosen from a list of the most common words in TV and movie
+scripts.
 
 ## Installation
 
@@ -18,7 +24,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Just run 'chbs'
 
 ## Contributing
 
