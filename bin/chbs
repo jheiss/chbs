@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+require 'chbs'
+
+def main
+  chbs = Chbs::Generator.new
+  puts chbs.generate
+end
+
+main

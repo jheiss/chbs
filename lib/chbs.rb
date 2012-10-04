@@ -1,5 +1,5 @@
 require "chbs/version"
+require "chbs/generator"
 
 module Chbs
-  # Your code goes here...
 end
