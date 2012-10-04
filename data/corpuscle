@@ -7,7 +7,7 @@ def tv_and_movies
   corpus = {}
   
   wordcount = 0
-  datadir = File.expand_path('../data/wiktionary/tv-and-movies/', __FILE__)
+  datadir = File.expand_path('../wiktionary/tv-and-movies/', __FILE__)
   Dir.foreach(datadir) do |file|
     next if file == '.' || file == '..'
     doc = Nokogiri::HTML(File.open(File.join(datadir, file)))
@@ -38,13 +38,16 @@ def tv_and_movies
       next if word.include?("'")
       # Skip proper names
       next if word =~ /^[A-Z]/
+      # Skip non-ASCII words
+      next if word =~ /[^a-z]/
       corpus[word.length] ||= []
       corpus[word.length] << word
       wordcount += 1
     end
   end
   
-  File.open('../corpus/tv-and-movies.json', 'w') do |file|
+  corpusdir = File.expand_path('../../corpus/', __FILE__)
+  File.open(File.join(corpusdir, 'tv-and-movies.json'), 'w') do |file|
     file.write corpus.to_json
   end
 end
