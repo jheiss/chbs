@@ -72,7 +72,7 @@ class ChbsOptionTests < Test::Unit::TestCase
       words = output[0].split('-')
       assert_equal 4, words.length
       words.each do |word|
-        assert_match /^a{3,10}$/, word
+        assert_match /^a{4,10}$/, word
       end
     end
   end
@@ -113,7 +113,7 @@ class ChbsOptionTests < Test::Unit::TestCase
     words = output[0].split('-')
     assert_equal 4, words.length
     words.each do |word|
-      assert_match /^[a-z]{3,5}$/, word
+      assert_match /^[a-z]{4,5}$/, word
     end
   end
   
@@ -122,14 +122,14 @@ class ChbsOptionTests < Test::Unit::TestCase
   end
   def test_min_rank
     output = nil
-    IO.popen("#{RUBY} -I #{LIBDIR} #{CHBS} --min-rank 10000") do |pipe|
+    IO.popen("#{RUBY} -I #{LIBDIR} #{CHBS} --min-rank 5000") do |pipe|
       output = pipe.readlines
     end
     assert_equal 1, output.length
     words = output[0].split('-')
     assert_equal 4, words.length
     words.each do |word|
-      assert_match /^[a-z]{3,10}$/, word
+      assert_match /^[a-z]{4,10}$/, word
       # FIXME: check rank
     end
   end
@@ -138,14 +138,14 @@ class ChbsOptionTests < Test::Unit::TestCase
   end
   def test_max_rank
     output = nil
-    IO.popen("#{RUBY} -I #{LIBDIR} #{CHBS} --max-rank 500") do |pipe|
+    IO.popen("#{RUBY} -I #{LIBDIR} #{CHBS} --max-rank 1000") do |pipe|
       output = pipe.readlines
     end
     assert_equal 1, output.length
     words = output[0].split('-')
     assert_equal 4, words.length
     words.each do |word|
-      assert_match /^[a-z]{3,10}$/, word
+      assert_match /^[a-z]{4,10}$/, word
       # FIXME: check rank
     end
   end
@@ -162,7 +162,7 @@ class ChbsOptionTests < Test::Unit::TestCase
     words = output[0].split('-')
     assert_equal 6, words.length
     words.each do |word|
-      assert_match /^[a-z]{3,10}$/, word
+      assert_match /^[a-z]{4,10}$/, word
     end
   end
   
@@ -179,7 +179,7 @@ class ChbsOptionTests < Test::Unit::TestCase
       words = output[count].split('-')
       assert_equal 4, words.length
       words.each do |word|
-        assert_match /^[a-z]{3,10}$/, word
+        assert_match /^[a-z]{4,10}$/, word
       end
     end
   end
@@ -196,7 +196,7 @@ class ChbsOptionTests < Test::Unit::TestCase
     words = output[0].split('=')
     assert_equal 4, words.length
     words.each do |word|
-      assert_match /^[a-z]{3,10}$/, word
+      assert_match /^[a-z]{4,10}$/, word
     end
   end
   
@@ -209,7 +209,7 @@ class ChbsOptionTests < Test::Unit::TestCase
     words = output[0].split('-')
     assert_equal 4, words.length
     words.each do |word|
-      assert_match /^[a-z]{3,10}$/, word
+      assert_match /^[a-z]{4,10}$/, word
     end
   end
   

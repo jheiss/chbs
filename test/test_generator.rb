@@ -36,8 +36,8 @@ class ChbsGeneratorTests < Test::Unit::TestCase
   def test_initialize_default_operation
     chbs = Chbs::Generator.new
     assert_kind_of Array, chbs.words
-    assert_includes 15000..20000, chbs.words.length
-    assert_include chbs.words, 'the'
+    assert_includes 7500..10000, chbs.words.length
+    assert_include chbs.words, 'about'
   end
   def test_initialize_corpus
     Tempfile.open('chbs') do |file|
@@ -46,8 +46,8 @@ class ChbsGeneratorTests < Test::Unit::TestCase
       
       chbs = Chbs::Generator.new(corpus: file.path)
       assert_kind_of Array, chbs.words
-      assert_equal 8, chbs.words.length
-      3.upto(10) do |i|
+      assert_equal 7, chbs.words.length
+      4.upto(10) do |i|
         word = (1..i).inject('') {|word| word << 'a'}
         assert_includes chbs.words, word
       end
@@ -61,7 +61,7 @@ class ChbsGeneratorTests < Test::Unit::TestCase
     words = password.split('-')
     assert_equal 4, words.length
     words.each do |word|
-      assert_match /^[a-z]{3,10}$/, word
+      assert_match /^[a-z]{4,10}$/, word
     end
   end
   def test_generate_min_length
@@ -79,26 +79,26 @@ class ChbsGeneratorTests < Test::Unit::TestCase
     words = password.split('-')
     assert_equal 4, words.length
     words.each do |word|
-      assert_match /^[a-z]{3,5}$/, word
+      assert_match /^[a-z]{4,5}$/, word
     end
   end
   def test_generate_min_rank
-    chbs = Chbs::Generator.new(min_rank: 10000)
+    chbs = Chbs::Generator.new(min_rank: 5000)
     password = chbs.generate
     words = password.split('-')
     assert_equal 4, words.length
     words.each do |word|
-      assert_match /^[a-z]{3,10}$/, word
+      assert_match /^[a-z]{4,10}$/, word
       # FIXME: check rank
     end
   end
   def test_generate_max_rank
-    chbs = Chbs::Generator.new(max_rank: 500)
+    chbs = Chbs::Generator.new(max_rank: 1000)
     password = chbs.generate
     words = password.split('-')
     assert_equal 4, words.length
     words.each do |word|
-      assert_match /^[a-z]{3,10}$/, word
+      assert_match /^[a-z]{4,10}$/, word
       # FIXME: check rank
     end
   end
@@ -108,7 +108,7 @@ class ChbsGeneratorTests < Test::Unit::TestCase
     words = password.split('-')
     assert_equal 6, words.length
     words.each do |word|
-      assert_match /^[a-z]{3,10}$/, word
+      assert_match /^[a-z]{4,10}$/, word
     end
   end
   def test_generate_separator
@@ -117,7 +117,7 @@ class ChbsGeneratorTests < Test::Unit::TestCase
     words = password.split('=')
     assert_equal 4, words.length
     words.each do |word|
-      assert_match /^[a-z]{3,10}$/, word
+      assert_match /^[a-z]{4,10}$/, word
     end
   end
 end

@@ -2,10 +2,10 @@ require 'json'
 require 'nokogiri'
 
 class Chbs::Generator
-  DEFAULT_MIN_LENGTH = 3
+  DEFAULT_MIN_LENGTH = 4
   DEFAULT_MAX_LENGTH = 10
   DEFAULT_MIN_RANK = 1
-  DEFAULT_MAX_RANK = 20000
+  DEFAULT_MAX_RANK = 10000
   DEFAULT_NUM_WORDS = 4
   DEFAULT_SEPARATOR = '-'
   
