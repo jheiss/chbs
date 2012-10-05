@@ -11,17 +11,17 @@ included, if you want your passwords to have a bit more of an old-timey feel.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Install it yourself as:
+
+    $ gem install chbs
+
+Or add this line to your application's Gemfile:
 
     gem 'chbs'
 
 And then execute:
 
     $ bundle
-
-Or install it yourself as:
-
-    $ gem install chbs
 
 ## Usage
 
