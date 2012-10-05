@@ -5,16 +5,27 @@ require 'optparse'
 
 def main
   parse_options
-  chbs = Chbs::Generator.new(@options)
-  puts chbs.generate(@options)
+  case @action
+  when :generate
+    chbs = Chbs::Generator.new(@options)
+    puts chbs.generate(@options)
+  when :list_corpora
+    corpora = Chbs.included_corpora
+    corpora.collect!{ |c| c == Chbs::DEFAULT_CORPUS ? c + ' (default)' : c }
+    puts corpora.join("\n")
+  end
 end
 def parse_options
+  @action = :generate
   @options = {}
   
   opts = OptionParser.new(nil, 24, '  ')
   opts.banner = 'Usage: chbs [options]'
   opts.on('--corpus', '-c', '=CORPUS', 'Corpus of words') do |opt|
     @options[:corpus] = opt
+  end
+  opts.on('--list-corpora', '-l', 'List included corpora') do |opt|
+    @action = :list_corpora
   end
   opts.on('--min-length', '-m', '=MIN', 'Minimum word length', Integer) do |opt|
     @options[:min_length] = opt
