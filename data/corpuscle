@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
 
+require 'chbs'
 require 'json'
 require 'nokogiri'
 
 def tv_and_movies
   corpus = {}
   
-  wordcount = 0
   datadir = File.expand_path('../wiktionary/tv-and-movies/', __FILE__)
   Dir.foreach(datadir) do |file|
     next if file == '.' || file == '..'
@@ -33,23 +33,54 @@ def tv_and_movies
       rank = td[0].content
       word = td[1].at_xpath('a').content
       count = td[2].content
+      next if reject_word?(word)
       
-      # Skip contractions
-      next if word.include?("'")
-      # Skip proper names
-      next if word =~ /^[A-Z]/
-      # Skip non-ASCII words
-      next if word =~ /[^a-z]/
       corpus[word.length] ||= []
       corpus[word.length] << word
-      wordcount += 1
     end
   end
   
-  corpusdir = File.expand_path('../../corpus/', __FILE__)
-  File.open(File.join(corpusdir, 'tv-and-movies.json'), 'w') do |file|
+  File.open(File.join(Chbs::CORPORA_DIRECTORY, 'tv-and-movies.json'), 'w') do |file|
     file.write corpus.to_json
   end
 end
 
-tv_and_movies
+def gutenberg
+  corpus = {}
+  
+  datadir = File.expand_path('../wiktionary/gutenberg/', __FILE__)
+  Dir.foreach(datadir) do |file|
+    next if file == '.' || file == '..'
+    doc = Nokogiri::HTML(File.open(File.join(datadir, file)))
+    doc.xpath("/html/body/div[@id='content']/div[@id='bodyContent']/div[@class='mw-content-ltr']/p/a").each do |a|
+      word = a.content
+      next if reject_word?(word)
+      corpus[word.length] ||= []
+      corpus[word.length] << word
+    end
+  end
+  
+  File.open(File.join(Chbs::CORPORA_DIRECTORY, 'gutenberg.json'), 'w') do |file|
+    file.write corpus.to_json
+  end
+end
+
+def reject_word?(word)
+  # Skip contractions
+  return true if word.include?("'")
+  # Skip proper names and capitalized words
+  return true if word =~ /^[A-Z]/
+  # Skip non-ASCII words
+  return true if word =~ /[^a-z]/
+  # Skip compound words
+  return true if word.include?('-')
+  
+  false
+end
+
+if !ARGV[0] || ARGV[0] == 'tv-and-movies'
+  tv_and_movies
+end
+if !ARGV[0] || ARGV[0] == 'gutenberg'
+  gutenberg
+end
