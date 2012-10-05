@@ -87,9 +87,10 @@ class ChbsGeneratorTests < Test::Unit::TestCase
     password = chbs.generate
     words = password.split('-')
     assert_equal 4, words.length
+    corpus = Chbs.load_corpus
     words.each do |word|
       assert_match /^[a-z]{4,10}$/, word
-      # FIXME: check rank
+      assert_includes 5000..10000, corpus[word]['rank']
     end
   end
   def test_generate_max_rank
@@ -97,9 +98,10 @@ class ChbsGeneratorTests < Test::Unit::TestCase
     password = chbs.generate
     words = password.split('-')
     assert_equal 4, words.length
+    corpus = Chbs.load_corpus
     words.each do |word|
       assert_match /^[a-z]{4,10}$/, word
-      # FIXME: check rank
+      assert_includes 1..1000, corpus[word]['rank']
     end
   end
   def test_generate_num_words
