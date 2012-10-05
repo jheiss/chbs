@@ -2,9 +2,22 @@ require 'json'
 require 'nokogiri'
 
 class Chbs::Generator
+  DEFAULT_MIN_LENGTH = 3
+  DEFAULT_MAX_LENGTH = 10
+  DEFAULT_MIN_RANK = 1
+  DEFAULT_MAX_RANK = 20000
+  DEFAULT_NUM_WORDS = 4
+  DEFAULT_SEPARATOR = '-'
+  
   attr_reader :corpus
   def initialize(options={})
     corpusname = options[:corpus] || Chbs::DEFAULT_CORPUS
+    min_length = options[:min_length] || DEFAULT_MIN_LENGTH
+    max_length = options[:max_length] || DEFAULT_MAX_LENGTH
+    min_rank = options[:min_rank] || DEFAULT_MIN_RANK
+    max_rank = options[:max_rank] || DEFAULT_MAX_RANK
+    @num_words = options[:num_words] || DEFAULT_NUM_WORDS
+    @separator = options[:separator] || DEFAULT_SEPARATOR
     
     corpusfile = nil
     if corpusname.include?('/')
@@ -13,26 +26,22 @@ class Chbs::Generator
       corpusfile = File.join(Chbs::CORPORA_DIRECTORY, "#{corpusname}.json")
     end
     @corpus = JSON.parse(File.read(corpusfile))
-  end
-  
-  def generate(options={})
-    min_length = options[:min_length] || 3
-    max_length = options[:max_length] || 10
-    num_words = options[:num_words] || 4
-    separator = options[:separator] || '-'
     
     # Creating a temporary array is suboptimal, but it seems fast enough
-    words = []
-    min_length.upto(max_length) do |i|
-      if @corpus[i.to_s]
-        words.concat(@corpus[i.to_s])
+    @words = []
+    @corpus.each do |word, wordstats|
+      if (min_length..max_length).include?(wordstats['length']) &&
+         (min_rank..max_rank).include?(wordstats['rank'])
+        @words << word
       end
     end
-    
+  end
+  
+  def generate
     passwords = []
-    num_words.times do
-      passwords << words[rand(words.length-1)]
+    @num_words.times do
+      passwords << @words[rand(@words.length-1)]
     end
-    passwords.join(separator)
+    passwords.join(@separator)
   end
 end
