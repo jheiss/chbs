@@ -25,15 +25,21 @@ Or install it yourself as:
 
 ## Usage
 
-Just running chbs with no options will be sufficient in most cases.
+Just running chbs with no options will be sufficient in most cases. Decrease
+max rank, -R 1000 for example, to get more common words and thus more easily
+remembered passwords. You can have chbs generate a bunch of passwords, -c 20
+for example, and pick one that you like.
 
     Usage: chbs [options]
-      -c, --corpus=CORPUS      Corpus of words
-      -l, --list-corpora       List included corpora
-      -m, --min-length=MIN     Minimum word length
-      -M, --max-length=MAX     Maximum word length
-      -n, --num-words=NUM      Number of words
-      -s, --separator=STRING   Word separator
+      -C, --corpus=CORPUS      Corpus of words
+          --list-corpora       List included corpora
+      -l, --min-length=MIN     Minimum word length [4]
+      -L, --max-length=MAX     Maximum word length [10]
+      -r, --min-rank=MIN       Minimum word rank [1]
+      -R, --max-rank=MAX       Maximum word rank [10000]
+      -n, --num-words=NUM      Number of words [4]
+      -s, --separator=STRING   Word separator [-]
+      -c, --count=COUNT        Number of passwords [1]
 
 ## Contributing
 
