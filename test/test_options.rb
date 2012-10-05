@@ -16,18 +16,18 @@ CHBS = File.expand_path('../bin/chbs', File.dirname(__FILE__))
 class ChbsOptionTests < Test::Unit::TestCase
   def setup
     @corpus = {
-      '1'  => ['a'],
-      '2'  => ['aa'],
-      '3'  => ['aaa'],
-      '4'  => ['aaaa'],
-      '5'  => ['aaaaa'],
-      '6'  => ['aaaaaa'],
-      '7'  => ['aaaaaaa'],
-      '8'  => ['aaaaaaaa'],
-      '9'  => ['aaaaaaaaa'],
-      '10' => ['aaaaaaaaaa'],
-      '11' => ['aaaaaaaaaaa'],
-      '12' => ['aaaaaaaaaaaa'],
+      'a' => {rank: 1,  length: 1},
+      'aa' => {rank: 2,  length: 2},
+      'aaa' => {rank: 3,  length: 3},
+      'aaaa' => {rank: 4,  length: 4},
+      'aaaaa' => {rank: 5,  length: 5},
+      'aaaaaa' => {rank: 6,  length: 6},
+      'aaaaaaa' => {rank: 7,  length: 7},
+      'aaaaaaaa' => {rank: 8,  length: 8},
+      'aaaaaaaaa' => {rank: 9,  length: 9},
+      'aaaaaaaaaa' => {rank: 10, length: 10},
+      'aaaaaaaaaaa' => {rank: 11, length: 11},
+      'aaaaaaaaaaaa' => {rank: 12, length: 12},
     }
   end
   
@@ -117,6 +117,39 @@ class ChbsOptionTests < Test::Unit::TestCase
     end
   end
   
+  def test_min_rank_arg_required
+    ensure_arg_required('--min-rank')
+  end
+  def test_min_rank
+    output = nil
+    IO.popen("#{RUBY} -I #{LIBDIR} #{CHBS} --min-rank 10000") do |pipe|
+      output = pipe.readlines
+    end
+    assert_equal 1, output.length
+    words = output[0].split('-')
+    assert_equal 4, words.length
+    words.each do |word|
+      assert_match /^[a-z]{3,10}$/, word
+      # FIXME: check rank
+    end
+  end
+  def test_max_rank_arg_required
+    ensure_arg_required('--max-rank')
+  end
+  def test_max_rank
+    output = nil
+    IO.popen("#{RUBY} -I #{LIBDIR} #{CHBS} --max-rank 500") do |pipe|
+      output = pipe.readlines
+    end
+    assert_equal 1, output.length
+    words = output[0].split('-')
+    assert_equal 4, words.length
+    words.each do |word|
+      assert_match /^[a-z]{3,10}$/, word
+      # FIXME: check rank
+    end
+  end
+  
   def test_num_words_arg_required
     ensure_arg_required('--num-words')
   end
@@ -130,6 +163,24 @@ class ChbsOptionTests < Test::Unit::TestCase
     assert_equal 6, words.length
     words.each do |word|
       assert_match /^[a-z]{3,10}$/, word
+    end
+  end
+  
+  def test_count_arg_required
+    ensure_arg_required('--count')
+  end
+  def test_count
+    output = nil
+    IO.popen("#{RUBY} -I #{LIBDIR} #{CHBS} --count 5") do |pipe|
+      output = pipe.readlines
+    end
+    assert_equal 5, output.length
+    0.upto(4).each do |count|
+      words = output[count].split('-')
+      assert_equal 4, words.length
+      words.each do |word|
+        assert_match /^[a-z]{3,10}$/, word
+      end
     end
   end
   

@@ -8,7 +8,9 @@ def main
   case @action
   when :generate
     chbs = Chbs::Generator.new(@options)
-    puts chbs.generate(@options)
+    @count.times do
+      puts chbs.generate
+    end
   when :list_corpora
     corpora = Chbs.included_corpora
     corpora.collect!{ |c| c == Chbs::DEFAULT_CORPUS ? c + ' (default)' : c }
@@ -17,27 +19,37 @@ def main
 end
 def parse_options
   @action = :generate
+  @count = 1
   @options = {}
   
   opts = OptionParser.new(nil, 24, '  ')
   opts.banner = 'Usage: chbs [options]'
-  opts.on('--corpus', '-c', '=CORPUS', 'Corpus of words') do |opt|
+  opts.on('--corpus', '-C', '=CORPUS', 'Corpus of words') do |opt|
     @options[:corpus] = opt
   end
-  opts.on('--list-corpora', '-l', 'List included corpora') do |opt|
+  opts.on('--list-corpora', 'List included corpora') do |opt|
     @action = :list_corpora
   end
-  opts.on('--min-length', '-m', '=MIN', 'Minimum word length', Integer) do |opt|
+  opts.on('--min-length', '-l', '=MIN', "Minimum word length [#{Chbs::Generator::DEFAULT_MIN_LENGTH}]", Integer) do |opt|
     @options[:min_length] = opt
   end
-  opts.on('--max-length', '-M', '=MAX', 'Maximum word length', Integer) do |opt|
+  opts.on('--max-length', '-L', '=MAX', "Maximum word length [#{Chbs::Generator::DEFAULT_MAX_LENGTH}]", Integer) do |opt|
     @options[:max_length] = opt
   end
-  opts.on('--num-words', '-n', '=NUM', 'Number of words', Integer) do |opt|
+  opts.on('--min-rank', '-r', '=MIN', "Minimum word rank [#{Chbs::Generator::DEFAULT_MIN_RANK}]", Integer) do |opt|
+    @options[:min_rank] = opt
+  end
+  opts.on('--max-rank', '-R', '=MAX', "Maximum word rank [#{Chbs::Generator::DEFAULT_MAX_RANK}]", Integer) do |opt|
+    @options[:max_rank] = opt
+  end
+  opts.on('--num-words', '-n', '=NUM', "Number of words [#{Chbs::Generator::DEFAULT_NUM_WORDS}]", Integer) do |opt|
     @options[:num_words] = opt
   end
-  opts.on('--separator', '-s', '=STRING', 'Word separator') do |opt|
+  opts.on('--separator', '-s', '=STRING', "Word separator [#{Chbs::Generator::DEFAULT_SEPARATOR}]") do |opt|
     @options[:separator] = opt
+  end
+  opts.on('--count', '-c', '=COUNT', "Number of passwords [#{@count}]", Integer) do |opt|
+    @count = opt
   end
   
   begin
