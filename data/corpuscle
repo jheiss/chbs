@@ -30,13 +30,12 @@ def tv_and_movies
       td = tr.xpath('td').to_a
       # Ignore some cruft in a few files
       next if td[0].content.include?('-----')
-      rank = td[0].content
+      rank = td[0].content.to_i
       word = td[1].at_xpath('a').content
-      count = td[2].content
+      count = td[2].content.to_i
       next if reject_word?(word)
       
-      corpus[word.length] ||= []
-      corpus[word.length] << word
+      corpus[word] = {rank: rank, length: word.length}
     end
   end
   
@@ -48,15 +47,16 @@ end
 def gutenberg
   corpus = {}
   
+  rank = 0
   datadir = File.expand_path('../wiktionary/gutenberg/', __FILE__)
   Dir.foreach(datadir) do |file|
     next if file == '.' || file == '..'
     doc = Nokogiri::HTML(File.open(File.join(datadir, file)))
     doc.xpath("/html/body/div[@id='content']/div[@id='bodyContent']/div[@class='mw-content-ltr']/p/a").each do |a|
+      rank += 1
       word = a.content
       next if reject_word?(word)
-      corpus[word.length] ||= []
-      corpus[word.length] << word
+      corpus[word] = {rank: rank, length: word.length}
     end
   end
   
