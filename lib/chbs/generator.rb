@@ -9,9 +9,8 @@ class Chbs::Generator
   DEFAULT_NUM_WORDS = 4
   DEFAULT_SEPARATOR = '-'
   
-  attr_reader :corpus
+  attr_reader :words
   def initialize(options={})
-    corpusname = options[:corpus] || Chbs::DEFAULT_CORPUS
     min_length = options[:min_length] || DEFAULT_MIN_LENGTH
     max_length = options[:max_length] || DEFAULT_MAX_LENGTH
     min_rank = options[:min_rank] || DEFAULT_MIN_RANK
@@ -19,17 +18,10 @@ class Chbs::Generator
     @num_words = options[:num_words] || DEFAULT_NUM_WORDS
     @separator = options[:separator] || DEFAULT_SEPARATOR
     
-    corpusfile = nil
-    if corpusname.include?('/')
-      corpusfile = corpusname
-    else
-      corpusfile = File.join(Chbs::CORPORA_DIRECTORY, "#{corpusname}.json")
-    end
-    @corpus = JSON.parse(File.read(corpusfile))
-    
     # Creating a temporary array is suboptimal, but it seems fast enough
     @words = []
-    @corpus.each do |word, wordstats|
+    corpus = Chbs::load_corpus(options[:corpus])
+    corpus.each do |word, wordstats|
       if (min_length..max_length).include?(wordstats['length']) &&
          (min_rank..max_rank).include?(wordstats['rank'])
         @words << word

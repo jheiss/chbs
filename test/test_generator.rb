@@ -35,11 +35,9 @@ class ChbsGeneratorTests < Test::Unit::TestCase
   
   def test_initialize_default_operation
     chbs = Chbs::Generator.new
-    assert_kind_of Hash, chbs.corpus
-    assert chbs.corpus.length > 1000
-    assert chbs.corpus['the']
-    assert_kind_of Hash, chbs.corpus['the']
-    assert chbs.corpus['the']['rank']
+    assert_kind_of Array, chbs.words
+    assert_includes 15000..20000, chbs.words.length
+    assert_include chbs.words, 'the'
   end
   def test_initialize_corpus
     Tempfile.open('chbs') do |file|
@@ -47,14 +45,11 @@ class ChbsGeneratorTests < Test::Unit::TestCase
       file.close
       
       chbs = Chbs::Generator.new(corpus: file.path)
-      assert_kind_of Hash, chbs.corpus
-      assert_equal 12, chbs.corpus.length
-      1.upto(12) do |i|
+      assert_kind_of Array, chbs.words
+      assert_equal 8, chbs.words.length
+      3.upto(10) do |i|
         word = (1..i).inject('') {|word| word << 'a'}
-        assert chbs.corpus[word]
-        assert_kind_of Hash, chbs.corpus[word]
-        assert_equal i, chbs.corpus[word]['length']
-        assert_equal i, chbs.corpus[word]['rank']
+        assert_includes chbs.words, word
       end
     end
   end
