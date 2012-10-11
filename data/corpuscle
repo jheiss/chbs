@@ -8,7 +8,8 @@ require 'json'
 require 'nokogiri'
 
 def main
-  @offensive = JSON.parse(File.read('offensive.json'))
+  offensefile = File.expand_path('offensive.json', File.dirname(__FILE__))
+  @offensive = JSON.parse(File.read(offensefile))
   
   if !ARGV[0] || ARGV[0] == 'tv-and-movies'
     tv_and_movies
