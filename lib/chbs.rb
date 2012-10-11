@@ -1,5 +1,6 @@
 require "chbs/version"
 require "chbs/generator"
+require 'json'
 
 module Chbs
   CORPORA_DIRECTORY = File.expand_path('../../corpora/', __FILE__)

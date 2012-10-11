@@ -1,6 +1,3 @@
-require 'json'
-require 'nokogiri'
-
 class Chbs::Generator
   DEFAULT_MIN_LENGTH = 4
   DEFAULT_MAX_LENGTH = 10
