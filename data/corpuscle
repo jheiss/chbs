@@ -1,8 +1,22 @@
 #!/usr/bin/env ruby
 
+# Be sure to run this script under 'bundle exec', otherwise it may attempt to
+# update the corpus in your installed copy of the chbs gem.
+
 require 'chbs'
 require 'json'
 require 'nokogiri'
+
+def main
+  @offensive = JSON.parse(File.read('offensive.json'))
+  
+  if !ARGV[0] || ARGV[0] == 'tv-and-movies'
+    tv_and_movies
+  end
+  if !ARGV[0] || ARGV[0] == 'gutenberg'
+    gutenberg
+  end
+end
 
 def tv_and_movies
   corpus = {}
@@ -39,9 +53,11 @@ def tv_and_movies
     end
   end
   
-  File.open(File.join(Chbs::CORPORA_DIRECTORY, 'tv-and-movies.json'), 'w') do |file|
+  corpusfile = File.join(Chbs::CORPORA_DIRECTORY, 'tv-and-movies.json')
+  File.open(corpusfile, 'w') do |file|
     file.write corpus.to_json
   end
+  report_on_corpus_generation(corpus, corpusfile)
 end
 
 def gutenberg
@@ -60,9 +76,11 @@ def gutenberg
     end
   end
   
-  File.open(File.join(Chbs::CORPORA_DIRECTORY, 'gutenberg.json'), 'w') do |file|
+  corpusfile = File.join(Chbs::CORPORA_DIRECTORY, 'gutenberg.json')
+  File.open(corpusfile, 'w') do |file|
     file.write corpus.to_json
   end
+  report_on_corpus_generation(corpus, corpusfile)
 end
 
 def reject_word?(word)
@@ -74,13 +92,15 @@ def reject_word?(word)
   return true if word =~ /[^a-z]/
   # Skip compound words
   return true if word.include?('-')
+  # Skip offensive words
+  return true if @offensive['exact'].include?(word)
+  return true if @offensive['substring'].any? { |o| word.include?(o) }
   
   false
 end
 
-if !ARGV[0] || ARGV[0] == 'tv-and-movies'
-  tv_and_movies
+def report_on_corpus_generation(corpus, corpusfile)
+  puts "Wrote corpus with #{corpus.length} words to #{corpusfile}"
 end
-if !ARGV[0] || ARGV[0] == 'gutenberg'
-  gutenberg
-end
+
+main
