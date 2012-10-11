@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+require 'chbs'
+require 'json'
+
+corpus = JSON.parse(File.read(ARGV[0]))
+corpus.sort{|a,b| [a[1]['length'],a[0]] <=> [b[1]['length'],b[0]]}.each do |entry|
+  word = entry[0]
+  wordstats = entry[1]
+  next if wordstats['rank'] > Chbs::Generator::DEFAULT_MAX_RANK
+  
+  puts word
+end
