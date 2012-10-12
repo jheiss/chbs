@@ -6,10 +6,13 @@
 require 'chbs'
 require 'json'
 require 'nokogiri'
+require 'set'
 
 def main
   offensefile = File.expand_path('offensive.json', File.dirname(__FILE__))
   @offensive = JSON.parse(File.read(offensefile))
+  @enable = Set.new
+  File.foreach('enable1.txt') { |enword| @enable << enword.chomp }
   
   if !ARGV[0] || ARGV[0] == 'tv-and-movies'
     tv_and_movies
@@ -96,6 +99,11 @@ def reject_word?(word)
   # Skip offensive words
   return true if @offensive['exact'].include?(word)
   return true if @offensive['substring'].any? { |o| word.include?(o) }
+  # Skip non-dictionary names
+  # This eliminates a lot of the people and place names, as well as gibberish
+  # words, from the tv-and-movies corpus.  I'd actually kinda like to keep the
+  # place names eventually.
+  return true if !@enable.include?(word)
   
   false
 end
