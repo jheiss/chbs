@@ -1,6 +1,6 @@
 # chbs
 
-An implementation of http://xkcd.com/936/
+An implementation of http://xkcd.com/936/, aka "correct horse battery staple".
 
 I.e. pick four random, common words and string them together to make a very
 strong but easy to remember password.
