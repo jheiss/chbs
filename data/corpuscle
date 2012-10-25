@@ -12,7 +12,8 @@ def main
   offensefile = File.expand_path('offensive.json', File.dirname(__FILE__))
   @offensive = JSON.parse(File.read(offensefile))
   @enable = Set.new
-  File.foreach('enable1.txt') { |enword| @enable << enword.chomp }
+  enablefile = File.expand_path('enable1.txt', File.dirname(__FILE__))
+  File.foreach(enablefile) { |enword| @enable << enword.chomp }
   
   if !ARGV[0] || ARGV[0] == 'tv-and-movies'
     tv_and_movies
