@@ -13,6 +13,7 @@ class Chbs::Generator
     min_rank = options[:min_rank] || DEFAULT_MIN_RANK
     max_rank = options[:max_rank] || DEFAULT_MAX_RANK
     @num_words = options[:num_words] || DEFAULT_NUM_WORDS
+    @phrase_length = options[:phrase_length]
     @separator = options[:separator] || DEFAULT_SEPARATOR
     
     # Creating a temporary array is suboptimal, but it seems fast enough
@@ -28,8 +29,17 @@ class Chbs::Generator
   
   def generate
     passwords = []
-    @num_words.times do
-      passwords << @words[rand(@words.length-1)]
+    if @phrase_length
+      while passwords.join(@separator).length < @phrase_length
+        passwords << @words[rand(@words.length-1)]
+      end
+      if passwords.join(@separator).length > @phrase_length
+        passwords.pop
+      end
+    else
+      @num_words.times do
+        passwords << @words[rand(@words.length-1)]
+      end
     end
     passwords.join(@separator)
   end

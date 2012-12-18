@@ -45,6 +45,9 @@ def parse_options
   opts.on('--num-words', '-n', '=NUM', "Number of words [#{Chbs::Generator::DEFAULT_NUM_WORDS}]", Integer) do |opt|
     @options[:num_words] = opt
   end
+  opts.on('--phrase-length', '-p', '=LEN', "Length of passphrase", Integer) do |opt|
+    @options[:phrase_length] = opt
+  end
   opts.on('--separator', '-s', '=STRING', "Word separator [#{Chbs::Generator::DEFAULT_SEPARATOR}]") do |opt|
     @options[:separator] = opt
   end

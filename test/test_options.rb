@@ -168,6 +168,18 @@ class ChbsOptionTests < Test::Unit::TestCase
     end
   end
   
+  def test_phrase_length_arg_required
+    ensure_arg_required('--phrase-length')
+  end
+  def test_phrase_length
+    output = nil
+    IO.popen("#{RUBY} -I #{LIBDIR} #{CHBS} --phrase-length 100") do |pipe|
+      output = pipe.readlines
+    end
+    assert_equal 1, output.length
+    assert_includes 90..100, output.first.chomp.length
+  end
+  
   def test_count_arg_required
     ensure_arg_required('--count')
   end

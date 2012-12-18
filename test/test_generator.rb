@@ -36,7 +36,7 @@ class ChbsGeneratorTests < Test::Unit::TestCase
   def test_initialize_default_operation
     chbs = Chbs::Generator.new
     assert_kind_of Array, chbs.words
-    assert_includes 7500..10000, chbs.words.length
+    assert_includes 7250..10000, chbs.words.length
     assert_include chbs.words, 'about'
   end
   def test_initialize_corpus
@@ -112,6 +112,15 @@ class ChbsGeneratorTests < Test::Unit::TestCase
     words.each do |word|
       assert_match /^[a-z]{4,10}$/, word
     end
+  end
+  def test_phrase_length
+    chbs = Chbs::Generator.new(phrase_length: 100)
+    password = chbs.generate
+    # Worst case is that we generate a phrase that is 101 characters long with
+    # a DEFAULT_MAX_LENGTH (10 character) word in the last place.  Once we pop
+    # that off we'll lose 10 characters from the word plus a separator,
+    # leaving a 90 character phrase.
+    assert_includes 90..100, password.length
   end
   def test_generate_separator
     chbs = Chbs::Generator.new(separator: '=')
