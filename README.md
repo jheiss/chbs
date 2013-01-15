@@ -39,6 +39,7 @@ easily remembered passwords. You can have chbs generate a bunch of passwords,
       -r, --min-rank=MIN       Minimum word rank [1]
       -R, --max-rank=MAX       Maximum word rank [10000]
       -n, --num-words=NUM      Number of words [4]
+      -p, --phrase-length=LEN  Length of passphrase
       -s, --separator=STRING   Word separator [-]
       -c, --count=COUNT        Number of passwords [1]
 
