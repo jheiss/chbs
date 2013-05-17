@@ -24,6 +24,9 @@ def main
   if !ARGV[0] || ARGV[0] == 'coca'
     coca
   end
+  if !ARGV[0] || ARGV[0] == 'babynames'
+    babynames
+  end
 end
 
 def tv_and_movies
@@ -111,7 +114,58 @@ def coca
   report_on_corpus_generation(corpus, corpusfile)
 end
 
-def reject_word?(word)
+def babynames
+  corpus = {}
+  
+  doc = Nokogiri::HTML(File.open('baby_names_ssa_2012.html'))
+  doc.xpath("//table[@summary='Popularity for top 1000']/tr").each do |tr|
+    # First row:
+    # <tr align="center" valign="bottom">
+    #   <th scope="col" width="12%" bgcolor="#efefef">Rank</th>
+    #   <th scope="col" width="41%" bgcolor="#99ccff">Male name</th>
+    # <th scope="col" bgcolor="pink" width="41%">Female name</th></tr>
+    if tr.at_xpath('th')
+      next
+    end
+    # Last row:
+    # <tr><td colspan="3"><small>Note: Rank 1 is the most popular,
+    # rank 2 is the next most popular, and so forth. 
+    # </small></td></tr>
+    if tr.at_xpath("td[@colspan='3']")
+      next
+    end
+    
+    # Normal row:
+    # <tr align="right">
+    #  <td>1</td> <td>Jacob</td> <td>Sophia</td>
+    # </tr>
+    td = tr.xpath('td').to_a
+    srank = td[0].content
+    rank = srank.to_i
+    if rank.to_s != srank
+      abort "Failed to convert rank #{srank} to integer"
+    end
+    boy = td[1].content.downcase
+    girl = td[2].content.downcase
+    
+    [boy, girl].each do |word|
+      next if reject_word?(word, false)
+      # Some names are in both the boy and girl lists.  Keep the one with the
+      # highest rank.
+      if !corpus[word]
+        corpus[word] = {rank: rank, length: word.length}
+      end
+    end
+  end
+  
+  corpusfile = File.join(Chbs::CORPORA_DIRECTORY, 'babynames.json')
+  File.open(corpusfile, 'w') do |file|
+    file.write corpus.to_json
+  end
+  report_on_corpus_generation(corpus, corpusfile)
+end
+
+def reject_word?(word, check_dictionary=true)
   # Skip contractions
   return true if word.include?("'")
   # Skip proper names and capitalized words
@@ -127,7 +181,9 @@ def reject_word?(word)
   # This eliminates a lot of the people and place names, as well as gibberish
   # words, from the tv-and-movies corpus.  I'd actually kinda like to keep the
   # place names eventually.
-  return true if !@enable.include?(word)
+  if check_dictionary
+    return true if !@enable.include?(word)
+  end
   
   false
 end
