@@ -21,6 +21,9 @@ def main
   if !ARGV[0] || ARGV[0] == 'gutenberg'
     gutenberg
   end
+  if !ARGV[0] || ARGV[0] == 'coca'
+    coca
+  end
 end
 
 def tv_and_movies
@@ -82,6 +85,26 @@ def gutenberg
   end
   
   corpusfile = File.join(Chbs::CORPORA_DIRECTORY, 'gutenberg.json')
+  File.open(corpusfile, 'w') do |file|
+    file.write corpus.to_json
+  end
+  report_on_corpus_generation(corpus, corpusfile)
+end
+
+def coca
+  corpus = {}
+  
+  File.foreach('coca.txt') do |line|
+    srank, word = line.split(' ')
+    rank = srank.to_i
+    if rank.to_s != srank
+      abort "Failed to convert rank #{srank} to integer"
+    end
+    next if reject_word?(word)
+    corpus[word] = {rank: rank, length: word.length}
+  end
+  
+  corpusfile = File.join(Chbs::CORPORA_DIRECTORY, 'coca.json')
   File.open(corpusfile, 'w') do |file|
     file.write corpus.to_json
   end

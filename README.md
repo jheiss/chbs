@@ -6,8 +6,14 @@ I.e. pick four random, common words and string them together to make a very
 strong but easy to remember password.
 
 The default corpus (word list) contains the most common words in TV and movie
-scripts. A corpus of the most common words from Project Gutenberg is also
-included, if you want your passwords to have a bit more of an old-timey feel.
+scripts.
+
+Additional corpora are included:
+
+* gutenberg: The most common words from Project Gutenberg, if you want your
+  passwords to have a bit more of an old-timey feel.
+* coca: The top 5000 words from the [Corpus of Contemporary American
+  English](http://www.wordfrequency.info/)
 
 ## Installation
 
