@@ -11,7 +11,7 @@ scripts.
 Additional corpora are included:
 
 * gutenberg: The most common words from Project Gutenberg, gives your
-  passwords to have a bit more of an old-timey feel.
+  passwords a bit more of an old-timey feel.
 * coca: The top 5000 words from the [Corpus of Contemporary American
   English](http://www.wordfrequency.info/)
 
