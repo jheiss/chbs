@@ -16,4 +16,5 @@ Gem::Specification.new do |gem|
   gem.version       = Chbs::VERSION
 
   gem.add_development_dependency('nokogiri')
+  gem.add_development_dependency('open4')
 end
