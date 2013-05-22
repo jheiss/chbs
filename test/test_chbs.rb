@@ -30,7 +30,7 @@ class ChbsTests < Test::Unit::TestCase
   end
   
   def test_included_corpora
-    assert_equal ['gutenberg', 'tv-and-movies'], Chbs.included_corpora
+    assert_equal ['babynames', 'coca', 'gutenberg', 'tv-and-movies'], Chbs.included_corpora
   end
   
   def test_load_corpus_default

@@ -82,8 +82,8 @@ class ChbsOptionTests < Test::Unit::TestCase
     IO.popen("#{RUBY} -I #{LIBDIR} #{CHBS} --list-corpora") do |pipe|
       output = pipe.readlines
     end
-    assert_equal 2, output.length
-    assert_equal ["gutenberg\n", "tv-and-movies (default)\n"], output
+    assert_equal 4, output.length
+    assert_equal ["babynames\n", "coca\n", "gutenberg\n", "tv-and-movies (default)\n"], output
   end
   
   def test_min_length_arg_required
