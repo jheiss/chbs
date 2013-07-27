@@ -1,15 +1,13 @@
 # chbs
 
-An implementation of http://xkcd.com/936/, aka "correct horse battery staple".
+An implementation of http://xkcd.com/936/, the "correct horse battery staple" comic.
 
-I.e. pick four random, common words and string them together to make a very
+Pick four random, common words and string them together to make a very
 strong but easy to remember password.
 
-The default corpus (word list) contains the most common words in TV and movie
-scripts.
+The included corpora (word lists):
 
-Additional corpora are included:
-
+* tv-and-movies: The most common words in TV and movie scripts
 * gutenberg: The most common words from Project Gutenberg, gives your
   passwords a bit more of an old-timey feel.
 * babynames: The top 1000 boy and girl names from the US Social Security
@@ -19,25 +17,15 @@ Additional corpora are included:
 
 ## Installation
 
-Install it yourself as:
-
     $ gem install chbs
-
-Or add this line to your application's Gemfile:
-
-    gem 'chbs'
-
-And then execute:
-
-    $ bundle
 
 ## Usage
 
-Just running chbs with no options will be sufficient in most cases.
+Running chbs with no options will be sufficient in most cases.
 
-Decrease max rank, -R 1000 for example, to get more common words and thus more
-easily remembered passwords. You can have chbs generate a bunch of passwords,
--c 20 for example, and pick one that you like.
+You can try decreasing the max rank, -R 1000 for example, to get more common
+words and thus more easily remembered passwords. You can also have chbs
+generate a bunch of passwords, -c 20 for example, and pick one that you like.
 
     Usage: chbs [options]
       -C, --corpus=CORPUS      Corpus of words
