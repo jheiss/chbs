@@ -97,7 +97,8 @@ end
 def coca
   corpus = {}
   
-  File.foreach('coca.txt') do |line|
+  cocafile = File.expand_path('coca.txt', File.dirname(__FILE__))
+  File.foreach(cocafile) do |line|
     srank, word = line.split(' ')
     rank = srank.to_i
     if rank.to_s != srank
@@ -117,7 +118,9 @@ end
 def babynames
   corpus = {}
   
-  doc = Nokogiri::HTML(File.open('baby_names_ssa_2012.html'))
+  babyfile =
+    File.expand_path('baby_names_ssa_2012.html', File.dirname(__FILE__))
+  doc = Nokogiri::HTML(File.open(babyfile))
   doc.xpath("//table[@summary='Popularity for top 1000']/tr").each do |tr|
     # First row:
     # <tr align="center" valign="bottom">
