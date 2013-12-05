@@ -23,9 +23,21 @@ The included corpora (word lists):
 
 Running chbs with no options will be sufficient in most cases.
 
+    $ chbs
+    feeding-escape-toward-accused
+
 You can try decreasing the max rank, -R 1000 for example, to get more common
 words and thus more easily remembered passwords. You can also have chbs
-generate a bunch of passwords, -c 20 for example, and pick one that you like.
+generate a bunch of passwords, -c 5 for example, and pick one that you like.
+
+    $ chbs -R 1000 -c 5
+    used-pretty-cause-done
+    together-words-walk-understand
+    beth-crazy-started-head
+    swear-child-asked-promise
+    finally-message-family-trouble
+
+Here's the full usage message:
 
     Usage: chbs [options]
       -C, --corpus=CORPUS      Corpus of words
