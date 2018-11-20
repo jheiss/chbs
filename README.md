@@ -1,6 +1,6 @@
 # chbs
 
-An implementation of http://xkcd.com/936/, the "correct horse battery staple" comic.
+An implementation of https://xkcd.com/936/, the "correct horse battery staple" comic.
 
 Pick four random, common words and string them together to make a very
 strong but easy to remember password.
@@ -13,7 +13,7 @@ The included corpora (word lists):
 * babynames: The top 1000 boy and girl names from the US Social Security
   Administration.
 * coca: The top 5000 words from the [Corpus of Contemporary American
-  English](http://www.wordfrequency.info/)
+  English](https://www.wordfrequency.info/)
 
 ## Installation
 
